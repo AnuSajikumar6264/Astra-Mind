@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ASTRA-MIND</title>
+<style>
+:root{--bg:#eef1f4;--pn:#fff;--ink:#14202b;--mu:#5b6b7a;--ln:#d5dce3;--ok:#1f7a6d;--wn:#b8530f;--al:#b3261e;--ac:#2a4d8f;--bd:#e6edf5;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d141b;--pn:#141e28;--ink:#e4ebf1;--mu:#93a3b3;--ln:#26333f;--ok:#52c4b0;--wn:#f0a15a;--al:#ff7a70;--ac:#7fa6ee;--bd:#1d2b3a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d141b;--pn:#141e28;--ink:#e4ebf1;--mu:#93a3b3;--ln:#26333f;--ok:#52c4b0;--wn:#f0a15a;--al:#ff7a70;--ac:#7fa6ee;--bd:#1d2b3a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums}
+main{max-width:1180px;margin:0 auto;padding:18px 14px 40px}
+h1{font:600 30px/1.1 "Iowan Old Style","Palatino Linotype",Georgia,serif;margin:0;letter-spacing:.01em}
+h2,h3{font:600 17px/1.2 "Iowan Old Style","Palatino Linotype",Georgia,serif;margin:0}
+.sub{color:var(--mu);margin:4px 0 0}
+.top{display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:space-between;align-items:flex-end;margin-bottom:12px}
+.pill{display:inline-block;border:1px solid var(--ln);border-radius:99px;padding:2px 10px;font-size:13px;color:var(--mu);background:var(--pn)}
+.pill.ok{color:var(--ok);border-color:var(--ok)}.pill.al{color:var(--al);border-color:var(--al)}.pill.wn{color:var(--wn);border-color:var(--wn)}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:10px;margin-bottom:14px}
+button,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--ln);border-radius:7px;padding:6px 10px;cursor:pointer}
+button:hover{border-color:var(--ac)}button:focus-visible,select:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+button.pri{background:var(--ac);color:var(--pn);border-color:var(--ac)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:14px;margin-bottom:14px}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:12px 14px;min-width:0}
+.card header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.row{display:grid;grid-template-columns:1fr auto;gap:2px 10px;width:100%;text-align:left;border:0;border-top:1px solid var(--ln);border-radius:0;background:none;padding:8px 2px}
+.row.sel{background:var(--bd)}
+.row b{font-weight:600}.u{color:var(--mu);font-size:13px}
+.sp{grid-column:1/-1;width:100%;height:34px}.band{fill:var(--bd)}.ln{fill:none;stroke:var(--ac);stroke-width:1.6}.pt{fill:var(--al)}
+.sp .band{fill:var(--bd)}
+.span2{grid-column:span 2}@media(max-width:700px){.span2{grid-column:auto}}
+.bar{height:8px;background:var(--bd);border-radius:4px;overflow:hidden;margin:3px 0 10px}.bar i{display:block;height:100%}
+.al-i{border-top:1px solid var(--ln);padding:8px 0}.al-i p{margin:2px 0 0;font-size:14px}
+.log{font-size:13px;color:var(--mu);margin:6px 0 0;padding-left:16px}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:3px 0}
+.fc{width:100%;height:auto;display:block}.fc .h{fill:none;stroke:var(--ac);stroke-width:1.8}.fc .f{fill:none;stroke:var(--wn);stroke-width:1.8;stroke-dasharray:5 4}.fc .iv{fill:var(--wn);opacity:.18}.fc .bn{fill:var(--bd)}
+.note{color:var(--mu);font-size:13px;margin-top:16px}
+</style></head><body><main>
+<div class="top"><div><h1>ASTRA-MIND</h1><p class="sub">Astronaut health monitor and physiological digital twin</p></div>
+<div><span class="pill wn">Provenance: SYNTHETIC</span> <span class="pill" id="clk"></span> <span class="pill" id="lk"></span></div></div>
+<div class="ctl">
+<select id="prof" aria-label="Crew member"><option value="0">Cmdr. Okafor</option><option value="1">Dr. Lindqvist</option><option value="2">Eng. Rao</option></select>
+<button id="pp" class="pri">Pause</button>
+<select id="spd" aria-label="Speed"><option value="600">1x</option><option value="200" selected>3x</option><option value="60">10x</option></select>
+<select id="evd" aria-label="Event domain"></select><button id="inj">Inject event</button>
+<button id="out">Start comms outage</button><button id="rs">Reset</button></div>
+<div class="grid" id="doms"></div>
+<div class="grid"><div class="card span2"><h2 id="fct"></h2><div id="fc"></div></div><div class="card"><h2>Digital twin state</h2><div id="tw"></div></div></div>
+<div class="grid"><div class="card span2"><h2>Health alerts</h2><div id="al"></div></div><div class="card"><h2>Onboard and Earth sync</h2><div id="sy"></div></div></div>
+<p class="note">Simulated crew and readings only, tagged SYNTHETIC. Anomaly scores are statistical deviations from each person’s own baseline (robust z-score over the first 72 hours), not disease probabilities. The forecast is a damped-trend Holt model with a 90% interval, a lightweight stand-in for Chronos-2. Every finding needs medical review.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const D=['Cardiovascular','Musculoskeletal','Immune','Behavioral','Radiation'];
+// id, domain, name, unit, baseline, sd, period(h), event direction, decimals
+const S=[['hr','Cardiovascular','Heart rate','bpm',62,2.5,1,1,0],['hrv','Cardiovascular','HRV (RMSSD)','ms',55,6,1,-1,0],['spo2','Cardiovascular','SpO₂','%',97.5,.6,1,-1,1],
+['grip','Musculoskeletal','Grip strength','kg',42,1.2,6,-1,1],['pow','Musculoskeletal','Squat power','W',210,9,6,-1,0],
+['crp','Immune','CRP','mg/L',1.2,.3,6,1,2],['il6','Immune','IL-6','pg/mL',1.8,.4,6,1,2],
+['slp','Behavioral','Sleep','h',7.1,.5,6,-1,1],['str','Behavioral','Stress index','pts',30,5,1,1,0],
+['dose','Radiation','Dose rate','µSv/h',22,1.5,1,1,1]];
+const PR=[11,29,47];let X,R,off,timer,playing=true;
+D.forEach(d=>$('evd').insertAdjacentHTML('beforeend',`<option>${d}</option>`));$('evd').value='Radiation';
+const mb=s=>{let a=s>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}};
+const gs=()=>Math.sqrt(-2*Math.log(1-R()))*Math.cos(6.2832*R());
+const med=a=>{const b=[...a].sort((x,y)=>x-y),n=b.length;return n%2?b[(n-1)/2]:(b[n/2-1]+b[n/2])/2};
+const nm=id=>S.find(s=>s[0]==id)[2];
+const clk=t=>{const h=t-72;return `day ${Math.floor(h/24)+1}, ${String(h%24).padStart(2,'0')}:00`};
+function gen(s,t){let m=s[4]*off[s[0]];if(s[0]=='hr')m+=1.5*Math.sin(t/24*6.283);let x=m+gs()*s[5];const e=X.ev;
+ if(e&&e.dom==s[1]&&t<e.t0+e.len){const r=Math.min(1,(t-e.t0+1)/3)*(1-(t-e.t0)/e.len);x+=s[7]*s[5]*(s[1]=='Radiation'?9:5)*r}return x}
+function adv(){const t=X.t;S.forEach(s=>{const a=X.ser[s[0]],nw=t%s[6]==0||!a.v.length,v=nw?gen(s,t):a.v[a.v.length-1],b=X.base[s[0]];a.v.push(v);
+ if(b){const z=(v-b.m)/b.s;a.z.push(z);a.f.push(nw&&Math.abs(z)>3.5)}else{a.z.push(0);a.f.push(false)}});X.t++}
+function log(m){X.log.unshift(`${clk(X.t)}: ${m}`);X.log=X.log.slice(0,4)}
+function reset(){R=mb(PR[+$('prof').value]);off={};S.forEach(s=>off[s[0]]=1+(R()-.5)*.1);
+ X={t:0,ser:{},base:{},alerts:[],ev:null,link:true,stored:0,earth:0,log:[],sel:(X&&X.sel)||'hr'};
+ S.forEach(s=>X.ser[s[0]]={v:[],z:[],f:[]});for(let i=0;i<72;i++)adv();
+ S.forEach(s=>{const v=X.ser[s[0]].v,m=med(v),d=med(v.map(q=>Math.abs(q-m)))*1.4826;X.base[s[0]]={m,s:Math.max(d,s[5]*.6)}});
+ X.stored=X.earth=720;$('out').textContent='Start comms outage';log('Monitoring started. Baseline learned from first 72 h.');render()}
+function tick(){adv();X.stored+=S.length;if(X.link)X.earth+=S.length;
+ S.forEach(s=>{const a=X.ser[s[0]],i=a.v.length-1;if(a.f[i]&&!X.alerts.some(l=>l.id==s[0]&&X.t-l.t<12)){const b=X.base[s[0]],z=a.z[i];
+  X.alerts.unshift({t:X.t,id:s[0],dom:s[1],k:'s',sy:X.link,txt:`${s[2]} ${a.v[i].toFixed(s[8])} ${s[3]} is ${Math.abs(z).toFixed(1)} SD ${z>0?'above':'below'} personal baseline (${b.m.toFixed(s[8])} ± ${b.s.toFixed(s[8])}).`})}});
+ const rc=X.alerts.filter(l=>l.k=='s'&&X.t-l.t<8),ds=[...new Set(rc.map(l=>l.dom))];
+ if(ds.length>1&&!X.alerts.some(l=>l.k=='c'&&X.t-l.t<16))X.alerts.unshift({t:X.t,k:'c',dom:ds.join(' + '),sy:X.link,txt:`Concurrent deviations across ${ds.join(', ')}: ${rc.map(l=>nm(l.id)).join(', ')}. Cross-domain pattern for flight surgeon review, not a diagnosis.`});
+ render()}
+function holt(y,h){let l=y[0],b=y[1]-y[0];const e=[];for(let i=1;i<y.length;i++){e.push(y[i]-(l+b));const n=.4*y[i]+.6*(l+b);b=.1*(n-l)+.9*b;l=n}
+ const sd=Math.sqrt(e.reduce((a,c)=>a+c*c,0)/e.length),p=.9;return Array.from({length:h},(_,i)=>({m:l+b*p*(1-Math.pow(p,i+1))/(1-p),w:1.64*sd*Math.sqrt(i+1)}))}
+function spark(a,f,b){const w=150,h=34,v=a.slice(-96),fl=f.slice(-96),lo=Math.min(...v,b.m-2*b.s),hi=Math.max(...v,b.m+2*b.s),
+ x=i=>i/(v.length-1)*w,y=q=>h-2-(q-lo)/(hi-lo||1)*(h-4);
+ return `<svg class="sp" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="trend"><rect class="band" x="0" y="${y(b.m+2*b.s)}" width="${w}" height="${y(b.m-2*b.s)-y(b.m+2*b.s)}"/><polyline class="ln" vector-effect="non-scaling-stroke" points="${v.map((q,i)=>x(i).toFixed(1)+','+y(q).toFixed(1)).join(' ')}"/>${fl.map((q,i)=>q?`<circle class="pt" cx="${x(i)}" cy="${y(v[i])}" r="2.5"/>`:'').join('')}</svg>`}
+function dh(d){const m=S.filter(s=>s[1]==d).map(s=>Math.max(...X.ser[s[0]].z.slice(-6).map(Math.abs)));return Math.max(0,Math.round(100-Math.max(0,Math.max(...m)-1.5)*20))}
+const col=n=>n>=85?'var(--ok)':n>=60?'var(--wn)':'var(--al)';
+function render(){const T=X.t-1;$('clk').textContent='Mission '+clk(T);
+ $('lk').className='pill '+(X.link?'ok':'al');$('lk').textContent=X.link?'Earth link: connected':'Earth link: outage';
+ $('doms').innerHTML=D.map(d=>{const sc=dh(d);return `<section class="card"><header><h3>${d}</h3><span class="pill" style="color:${col(sc)};border-color:${col(sc)}">${sc>=85?'Nominal':sc>=60?'Watch':'Review'} ${sc}</span></header>`+
+  S.filter(s=>s[1]==d).map(s=>{const a=X.ser[s[0]],v=a.v[a.v.length-1],z=a.z[a.z.length-1],az=Math.abs(z),c=a.f.slice(-3).some(Boolean)?'al':az>2?'wn':'ok';
+   return `<button class="row${X.sel==s[0]?' sel':''}" data-id="${s[0]}"><span>${s[2]}${s[6]>1?' <span class="u">(every '+s[6]+' h)</span>':''}</span><span><b>${v.toFixed(s[8])}</b> <span class="u">${s[3]}</span> <span class="pill ${c}">${z>0?'+':''}${z.toFixed(1)} SD</span></span>${spark(a.v,a.f,X.base[s[0]])}</button>`}).join('')+
+  (d=='Radiation'?`<div class="kv"><span class="u">Cumulative dose (mission)</span><b>${(X.ser.dose.v.reduce((a,c)=>a+c,0)/1000).toFixed(2)} mSv</b></div>`:'')+`</section>`}).join('');
+ const s=S.find(q=>q[0]==X.sel),a=X.ser[s[0]],b=X.base[s[0]],hv=a.v.slice(-72),fc=holt(a.v.slice(-96),24);
+ $('fct').textContent=`24 h forecast: ${s[2]}`;
+ const W=600,H=170,all=[...hv,...fc.map(q=>q.m+q.w),...fc.map(q=>q.m-q.w),b.m+2*b.s,b.m-2*b.s],lo=Math.min(...all),hi=Math.max(...all),n=hv.length+24,
+ x=i=>i/(n-1)*W,y=q=>H-6-(q-lo)/(hi-lo||1)*(H-12),L=hv.length-1,
+ up=fc.map((q,i)=>x(L+1+i)+','+y(q.m+q.w)).join(' '),dn=fc.map((q,i)=>x(L+1+i)+','+y(q.m-q.w)).reverse().join(' '),last=fc[23];
+ $('fc').innerHTML=`<svg class="fc" viewBox="0 0 ${W} ${H}" role="img" aria-label="forecast"><rect class="bn" x="0" y="${y(b.m+2*b.s)}" width="${W}" height="${y(b.m-2*b.s)-y(b.m+2*b.s)}"/><polygon class="iv" points="${up} ${dn}"/><polyline class="h" points="${hv.map((q,i)=>x(i).toFixed(1)+','+y(q).toFixed(1)).join(' ')}"/><polyline class="f" points="${[hv[L],...fc.map(q=>q.m)].map((q,i)=>x(L+i).toFixed(1)+','+y(q).toFixed(1)).join(' ')}"/></svg>
+ <p class="u" style="margin:6px 0 0">Plus 24 h: ${last.m.toFixed(s[8])} ${s[3]} (90% interval ${(last.m-last.w).toFixed(s[8])} to ${(last.m+last.w).toFixed(s[8])}). Shaded band is the personal baseline range. Select any metric to forecast it.</p>`;
+ const sc=D.map(dh),ov=Math.round(sc.reduce((p,c)=>p+c,0)/5);
+ $('tw').innerHTML=`<p style="margin:6px 0 10px"><b style="font-size:26px;color:${col(ov)}">${ov}</b> <span class="u">overall, ${ov>=85?'nominal':ov>=60?'watch':'review by flight surgeon'}</span></p>`+D.map((d,i)=>`<div class="kv"><span>${d}</span><span class="u">${sc[i]}</span></div><div class="bar"><i style="width:${sc[i]}%;background:${col(sc[i])}"></i></div>`).join('')+`<p class="u" style="margin:0">Twin state uses the worst deviation per domain over the last 6 h.</p>`;
+ $('al').innerHTML=X.alerts.length?X.alerts.slice(0,7).map(l=>`<div class="al-i"><span class="pill ${l.k=='c'?'al':'wn'}">${l.k=='c'?'Cross-domain':l.dom}</span> <span class="u">${clk(l.t-1)}, ${l.sy?'on Earth':'onboard only'}</span><p>${l.txt}</p></div>`).join(''):`<p class="u">No alerts yet. Use Inject event to simulate a deviation.</p>`;
+ const q=X.stored-X.earth;
+ $('sy').innerHTML=`<div class="kv"><span>Stored onboard</span><b>${X.stored}</b></div><div class="kv"><span>Received on Earth</span><b>${X.earth}</b></div><div class="kv"><span>Waiting in sync queue</span><b style="color:${q?'var(--wn)':'inherit'}">${q}</b></div><div class="kv"><span>Alerts not yet on Earth</span><b>${X.alerts.filter(l=>!l.sy).length}</b></div><ul class="log">${X.log.map(l=>`<li>${l}</li>`).join('')}</ul>`}
+function run(){clearInterval(timer);if(playing)timer=setInterval(tick,+$('spd').value)}
+$('doms').addEventListener('click',e=>{const r=e.target.closest('.row');if(r){X.sel=r.dataset.id;render()}});
+$('pp').onclick=()=>{playing=!playing;$('pp').textContent=playing?'Pause':'Play';run()};
+$('spd').onchange=run;$('prof').onchange=reset;$('rs').onclick=reset;
+$('inj').onclick=()=>{X.ev={dom:$('evd').value,t0:X.t,len:14};log(`Simulated ${X.ev.dom} event injected.`);render()};
+$('out').onclick=()=>{if(X.link){X.link=false;log('Link lost. Monitoring continues onboard; data queues locally.');$('out').textContent='Restore link'}else{const n=X.stored-X.earth;X.earth=X.stored;X.alerts.forEach(l=>l.sy=true);X.link=true;log(`Link restored. Synced ${n} observations and queued alerts.`);$('out').textContent='Start comms outage'}render()};
+reset();run();
+</script></body></html>
